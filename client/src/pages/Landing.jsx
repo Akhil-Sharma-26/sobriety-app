@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
 
 const Landing = () => {
-  let user
-    React.useEffect(()=>{
-    user = localStorage.getItem("USERNAME");
-    if(!user){
+  useEffect(() => {
+    const user = localStorage.getItem("USERNAME");
+    if (!user) {
       window.location.href = "/login";
-    } 
-  },[]);
+    }
+  }, []);
+
+  const user = localStorage.getItem("USERNAME");
+
   return (
     <div>
       <div className="header">
