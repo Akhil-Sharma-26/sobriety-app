@@ -1,73 +1,65 @@
-// import React,{useState}from 'react'
-
-// const LoginPage = () => {
-//     const[action,setAction]=useState("Login");
-
-//   return (
-
-//     <>
-//       <div className='container'>
-//         <div className='header'>
-//             <div className='text'>{action}</div>
-//             <div className='underline'></div>
-//         </div>
-//         <div className='inputs'>
-//             {action==="Login"?<div></div>:
-//             <div className='input'>
-//                 <input type="text" placeholder='Username' />
-//             </div>}
-//             <div className='input'>
-//                 <input type="email" placeholder='Email-Id' />
-//             </div>
-//             <div className='input'>
-//                 <input type="password" placeholder='Password'/>
-//             </div>
-//         </div>
-//         <div className='forget-password'>Forget Password   
-//               <span> Click Here!</span></div>
-//         <div className='submit-container'>
-//             <button className='submit' onClick={()=>{setAction("Login")}}>Login</button>
-
-//         </div>
-      
-//     </div>
-//     </>
-//   )
-// }
-
-// export default LoginPage
-import React, { useState } from 'react'
+import React, { useState } from "react";
+import { useRef } from "react";
+import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
-    const[action,setAction]=useState("SignUp");
+  const [action, setAction] = useState("SignUp");
+  const emailRef = useRef();
+  const userNameRef = useRef();
+  const passwordRef = useRef();
+  const navigate = useNavigate();
 
-
-
+  const handleSubmit = () => {
+    const user = {
+      email: emailRef.current.value,
+      display_name: userNameRef.current.value,
+      password: passwordRef.current.value,
+    };
+    // user = JSON.stringify(user);
+    // console.log(user);
+    if (user.email === "" || user.display_name === "" || user.password === "") {
+      alert("Please fill all the fields");
+      return;
+    }
+    axios
+      .post("http://localhost:8080/api/v1/users/register", user)
+      .then((res) => {
+        console.log(res);
+        navigate("/login");
+      });
+  };
 
   return (
-    <div className='container'>
-        <div className='header'>
-            <div className='text'>{action}</div>
-            <div className='underline'></div>
+    <div className="container">
+      <div className="header">
+        <div className="text">{action}</div>
+        <div className="underline"></div>
+      </div>
+      <div className="inputs">
+        <div className="input">
+          <input type="text" placeholder="Username" ref={userNameRef} />
         </div>
-        <div className='inputs'>
-            <div className='input'>
-                <input type="text" placeholder='Username' />
-            </div>
-            <div className='input'>
-                <input type="email" placeholder='Email-Id' />
-            </div>
-            <div className='input'>
-                <input type="password" placeholder='Password'/>
-            </div>
+        <div className="input">
+          <input type="email" placeholder="Email-Id" ref={emailRef} />
         </div>
-        <div className='submit-container'>
-            <button className='submit' onClick={()=>{setAction("SignUp")}}>Sign Up</button>
-
+        <div className="input">
+          <input type="password" placeholder="Password" ref={passwordRef} />
         </div>
-      
+      </div>
+      <div className="submit-container">
+        <button
+          className="submit"
+          onClick={() => {
+            setAction("SignUp");
+            handleSubmit();
+          }}
+        >
+          Sign Up
+        </button>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignupPage
+export default SignupPage;
