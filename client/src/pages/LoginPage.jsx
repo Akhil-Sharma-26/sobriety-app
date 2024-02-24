@@ -16,7 +16,7 @@ const LoginPage = () => {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
-    if (user.email === "" || user.display_name === "" || user.password === "") {
+    if (user.email === "" || user.password === "") {
       alert("Please fill all the fields");
       return;
     }
@@ -27,6 +27,8 @@ const LoginPage = () => {
       );
       console.log(res);
       localStorage.setItem("USERNAME_ID", res.data.user_id);
+      localStorage.setItem("USERNAME", res.data.display_name);
+      navigate('/')
     } catch (error) {
       console.error("SomeError Occured", error);
     }
