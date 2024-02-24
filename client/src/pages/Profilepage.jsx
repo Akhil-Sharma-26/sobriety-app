@@ -1,3 +1,6 @@
+
+// import React,{useState,useEffect} from 'react'
+
 // const Profilepage = () => {
 //         const [streak, setStreak] = useState(0);
 //         const [maxStreak, setMaxStreak] = useState(0);
@@ -51,7 +54,7 @@ const Profilepage = () => {
   const fetchUserDetails = async (req, res) => {
     console.log("fetchUserDetails");
     axios
-      .post("http://localhost:8080/api/v1/users/user-details", { user_id: 19 })
+      .post("http://localhost:8080/api/v1/users/user-details", { user_id: 1})
       .then((res) => {
         console.log(res.data);
         user1.display_name = res.data.details.display_name;

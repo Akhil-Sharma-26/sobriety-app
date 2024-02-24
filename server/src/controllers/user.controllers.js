@@ -139,9 +139,11 @@ const fetchUserBlogs = async (req, res) => {
       }
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).json({ message: "Internal server error" });
     });
 };
+
 
 const resetUser = async (req, res) => {
     initialiseUser(req.body.user_id).then((result) => {
@@ -205,6 +207,23 @@ const checkIn = async (req, res) => {
         res.status(500).json({message: "Internal server error"});
     });
 }
+const fetchAllBlogs = async (req, res) => {
+  queryPromise("select * from blog_posts")
+    .then((result) => {
+      if (result.length == 0) {
+        res.status(404).json({ message: "No blogs found for this user" });
+      } else {
+        res.status(200).json({
+          message: "User blogs fetched successfully",
+          blogs: result,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error" });
+    });
+};
 
 export {
     registerUser,
@@ -213,5 +232,7 @@ export {
     fetchUserBlogs,
     resetUser,
     getStreak,
-    checkIn
+    checkIn,
+  fetchAllBlogs
 }
+

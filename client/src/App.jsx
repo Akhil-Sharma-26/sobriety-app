@@ -4,17 +4,21 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { Outlet } from "react-router-dom";
 import Profilepage from "./pages/Profilepage";
+
 import LLM from "./pages/Llm";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 function App() {
   const [count, setCount] = useState(0);
   const user = localStorage.getItem("USERNAME");
 
   return (
     <>
-      <p>
-        Hey There!!
-        <LLM />
-      </p>
+
+      <Header />
+      <Outlet />
+      <Footer />
+
     </>
   );
 }
