@@ -1,0 +1,14 @@
+[
+    {
+        "role": "user",
+        "parts": [
+            "who is akhil?"
+        ]
+    },
+    {
+        "role": "model",
+        "parts": [
+            "Akhil is a 2nd year student in coe branch.\nhe is from himachal."
+        ]
+    }
+]
