@@ -1,27 +1,33 @@
 import React, { useState } from "react";
 import { useRef } from "react";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
   const [action, setAction] = useState("SignUp");
   const emailRef = useRef();
   const userNameRef = useRef();
   const passwordRef = useRef();
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
-    let user = {
+    const user = {
       email: emailRef.current.value,
       display_name: userNameRef.current.value,
       password: passwordRef.current.value,
     };
     // user = JSON.stringify(user);
-    console.log(user);
+    // console.log(user);
+    if (user.email === "" || user.display_name === "" || user.password === "") {
+      alert("Please fill all the fields");
+      return;
+    }
     axios
       .post("http://localhost:8080/api/v1/users/register", user)
       .then((res) => {
         console.log(res);
+        navigate("/login");
       });
-    localStorage.setItem("USERNAME", user.display_name);
   };
 
   return (
