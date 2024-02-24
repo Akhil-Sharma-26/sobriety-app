@@ -34,6 +34,7 @@ create table blog_posts (
     author int not null,
     date_created datetime not null,
     date_edited datetime,
+    heading varchar(255) not null,
     content text not null,
     upvote int,
     
