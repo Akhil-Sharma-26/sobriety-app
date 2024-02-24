@@ -19,8 +19,8 @@ user = localStorage.getItem("USERNAME");
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="" element={<Landing />} />
-      <Route path="login" element={<LoginPage />} />
+      <Route path="" element={user ? <Landing /> : <SignupPage />} />
+      <Route path="login" element={!user ? <LoginPage /> : <Landing />} />
       <Route path="SignUp" element={<SignupPage />} />
     </Route>
   )
