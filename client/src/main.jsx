@@ -3,12 +3,17 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { RouterProvider, createBrowserRouter, Outlet, createRoutesFromElements, Route } from 'react-router-dom'
+import LoginPage from './pages/LoginPage.jsx'
+import SignupPage from './pages/SignupPage.jsx'
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App/>}>
-      {/* <Route path='/login' element={<LoginPage/>}/> */}
+      <Route path='/login' element={<LoginPage/>}/>
+      <Route path='/SignUp' element={<SignupPage
+      />}/>
+
     </Route>
   )
 )
