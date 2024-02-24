@@ -24,8 +24,7 @@ const registerUser = async (req, res) => {
       queryPromise(
         `insert into users (display_name, email, password) values (?, ?, ?)`,
         [req.body.display_name, req.body.email, req.body.password]
-      );
-      q.then((result) => {
+      ).then((result) => {
         res.status(201).json({ message: "User created successfully" });
       }).catch((err) => {
         res.status(500).json({ message: "Internal server error" });
