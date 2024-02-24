@@ -1,6 +1,5 @@
 import connection from "../../../db/db.js";
 
-
 function queryPromise(queryTemplate, params) {
     return new Promise((resolve, reject) => {
         connection.query(
@@ -72,4 +71,3 @@ export {
     registerUser,
     loginUser
 }
-
