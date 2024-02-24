@@ -1,8 +1,7 @@
-// var mysql = require('mysql');
-import dotenv from 'dotenv'
-import mysql from 'mysql2'
+import dotenv from "dotenv";
+import mysql from "mysql2";
 dotenv.config({
-  path: "../.env"
+  path: "../.env",
 });
 // console.log(process.env.DB_USER)
 const connection = mysql.createConnection({
@@ -10,12 +9,12 @@ const connection = mysql.createConnection({
   port: process.env.DB_PORT,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME,
 });
 
-connection.connect(function(err) {
+connection.connect(function (err) {
   if (err) throw err;
-  console.log('Connected to the MySQL server.');
+  console.log("Connected to the MySQL server.");
 });
-export default connection
+export default connection;
 //module.exports = connection;
