@@ -26,7 +26,7 @@ const router = createBrowserRouter(
       <Route path="blogs" element={<BlogPage />} />
       <Route path="profile" element={<Profilepage />} />
       <Route path="SignUp" element={<SignupPage />} />
-      <Route path="login" element={!user ? <LoginPage /> : <Landing />} />
+      <Route path="login" element={ <LoginPage /> } />
     </Route>
   )
 );

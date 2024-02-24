@@ -103,8 +103,27 @@ const fetchUserBlogs = async (req, res) => {
       }
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).json({ message: "Internal server error" });
     });
 };
 
-export { registerUser, loginUser, fetchUserDetails, fetchUserBlogs };
+const fetchAllBlogs = async (req, res) => {
+  queryPromise("select * from blog_posts")
+    .then((result) => {
+      if (result.length == 0) {
+        res.status(404).json({ message: "No blogs found for this user" });
+      } else {
+        res.status(200).json({
+          message: "User blogs fetched successfully",
+          blogs: result,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error" });
+    });
+};
+
+export { registerUser, loginUser, fetchUserDetails, fetchUserBlogs , fetchAllBlogs};
