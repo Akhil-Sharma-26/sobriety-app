@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { useRef } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
-
+import './SignupPage.css'
+import user_icon from '../assets/person.png'
+import email_icon from '../assets/email.png'
+import password_icon from '../assets/password.png'
 const SignupPage = () => {
   const [action, setAction] = useState("SignUp");
   const emailRef = useRef();
@@ -38,12 +41,15 @@ const SignupPage = () => {
       </div>
       <div className="inputs">
         <div className="input">
+          <img src={user_icon} alt="" />
           <input type="text" placeholder="Username" ref={userNameRef} />
         </div>
         <div className="input">
+        <img src={email_icon} alt="" />
           <input type="email" placeholder="Email-Id" ref={emailRef} />
         </div>
         <div className="input">
+        <img src={password_icon} alt="" />
           <input type="password" placeholder="Password" ref={passwordRef} />
         </div>
       </div>
