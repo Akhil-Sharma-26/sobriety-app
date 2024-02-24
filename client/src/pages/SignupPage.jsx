@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRef } from "react";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
-
+import bcryptjs from "bcryptjs";
 const SignupPage = () => {
   const [action, setAction] = useState("SignUp");
   const emailRef = useRef();
@@ -10,7 +10,8 @@ const SignupPage = () => {
   const passwordRef = useRef();
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    // const hashedPass = await bcryptjs.hash(passwordRef.current.value, 10);
     const user = {
       email: emailRef.current.value,
       display_name: userNameRef.current.value,
@@ -58,6 +59,13 @@ const SignupPage = () => {
           Sign Up
         </button>
       </div>
+      <div className="wao">
+            Already Have an Account??
+          <span >
+            <button onClick={()=>navigate('/login')}> Click Here!
+            </button>
+            </span>
+        </div>
     </div>
   );
 };

@@ -27,8 +27,7 @@ const registerUser = async (req, res) => {
       queryPromise(
         `insert into users (display_name, email, password) values (?, ?, ?)`,
         [req.body.display_name, req.body.email, req.body.password]
-      );
-      q.then((result) => {
+      ).then((result) => {
         res.status(201).json({ message: "User created successfully" });
       }).catch((err) => {
         res.status(500).json({ message: "Internal server error" });
@@ -49,7 +48,7 @@ const loginUser = async (req, res) => {
       res.status(404).json({ message: "User not found" });
     } else {
       queryPromise(
-        `select user_id from users where email = ? and password = ?`,
+        `select user_id,display_name from users where email = ? and password = ?`,
         [req.body.email, req.body.password]
       )
         .then((result) => {
@@ -59,6 +58,7 @@ const loginUser = async (req, res) => {
             res.status(200).json({
               message: "User logged in successfully",
               user_id: result[0].user_id,
+              display_name: result[0].display_name
             });
           }
         })
