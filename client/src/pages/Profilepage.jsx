@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+// import React,{useState,useEffect} from 'react'
 // const Profilepage = () => {
 //         const [streak, setStreak] = useState(0);
 //         const [maxStreak, setMaxStreak] = useState(0);
