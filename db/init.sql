@@ -12,9 +12,9 @@ create table addiction_types (
 create table users (
 	user_id int auto_increment,
 	display_name varchar(255) not null,
-    email varchar(320) not null,
+    email varchar(320) unique not null,
     password varchar(255) not null,
-    addiction int not null,
+    addiction int,
     
     primary key (user_id),
     foreign key (addiction) references addiction_types(id)
