@@ -1,5 +1,8 @@
 import connection from "../../../db/db.js";
 
+
+// helper functions
+
 function queryPromise(queryTemplate, params) {
   return new Promise((resolve, reject) => {
     connection.query(queryTemplate, params, function (err, result) {
@@ -68,4 +71,45 @@ const loginUser = async (req, res) => {
   });
 };
 
-export { registerUser, loginUser };
+const fetchUserDetails = async (req, res) => {
+    queryPromise(
+        "select display_name, addiction from users where user_id = ?",
+        [req.body.user_id]
+    ).then((result) => {
+        if (result.length > 0) {
+            res.status(200).json({
+                message: "User details fetched successfully",
+                details: result[0]
+            });
+        } else {
+            res.status(404).json({message: "User not found"});
+        }
+    }).catch((err) => {
+        res.status(500).json({message: "Internal server error"});
+    });
+}
+
+const fetchUserBlogs = async (req, res) => {
+    queryPromise(
+        "select * from blog_posts where user_id = ?",
+        [req.body.user_id]
+    ).then((result) => {
+        if (result.length == 0) {
+            res.status(404).json({message: "No blogs found for this user"});
+        } else {
+            res.status(200).json({
+                message: "User blogs fetched successfully",
+                blogs: result
+            });
+        }
+    }).catch((err) => {
+        res.status(500).json({message: "Internal server error"});
+    });
+}
+
+export {
+    registerUser,
+    loginUser,
+    fetchUserDetails,
+    fetchUserBlogs
+}
