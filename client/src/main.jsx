@@ -12,6 +12,7 @@ import {
 import LoginPage from "./pages/LoginPage.jsx";
 import SignupPage from "./pages/SignupPage.jsx";
 import Landing from "./pages/Landing.jsx";
+import BlogPage from "./pages/BlogPage.jsx";
 
 let user = null;
 user = localStorage.getItem("USERNAME");
@@ -21,7 +22,8 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />}>
       <Route path="" element={user ? <Landing /> : <SignupPage />} />
       <Route path="login" element={!user ? <LoginPage /> : <Landing />} />
-      <Route path="SignUp" element={<SignupPage />} />
+      <Route path="signup" element={<SignupPage />} />
+      <Route path="blogs" element={<BlogPage />} />
     </Route>
   )
 );
