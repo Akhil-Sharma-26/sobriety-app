@@ -15,8 +15,44 @@ function queryPromise(queryTemplate, params) {
   });
 }
 
-const registerUser = async (req, res) => {
-  let q;
+async function initialiseUser(user_id) {
+    await queryPromise("delete from streak where user_id = ?", [user_id]);
+    await queryPromise("update users set addiction = NULL where user_id = ?", [user_id]);
+
+    let year = new Date().getFullYear();
+    let isLeapYear = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+    return queryPromise(
+        "insert into streak (user_id, streak_year, streak_array) values (?, ?, ?)",
+        [user_id, 2024, generateEmptyStreak(isLeapYear)]
+    )
+}
+
+function generateEmptyStreak(isLeapYear) {
+    let days = isLeapYear ? 366 : 365;
+    let output = "";
+    for (let i = 0; i < days; i++) {
+        output += "0";
+    }
+    
+    return output;
+}
+
+function parseStreak(streakArray, year) {
+    let isLeapYear = year % 4 == 0;
+    let days = isLeapYear ? 366 : 365;
+    let output = [];
+
+    for (let i = 0; i < days; i++) {
+        output.push(streakArray[i] == "1");
+    }
+    return output;
+}
+
+
+// api functions
+
+const registerUser = async(req, res) => {
+    let q;
 
   // check if the email is already registered
   q = queryPromise(`select * from users where email = ?`, [req.body.email]);
@@ -107,9 +143,75 @@ const fetchUserBlogs = async (req, res) => {
     });
 }
 
+const resetUser = async (req, res) => {
+    initialiseUser(req.body.user_id).then((result) => {
+        if (result) {
+            res.status(200).json({message: "User details reset successfully"});
+        } else {
+            res.status(500).json({message: "Internal server error"});
+        }
+    })   
+}
+
+const getStreak = async (req, res) => {
+    queryPromise(
+        "select streak_array, streak_year from streak where user_id = ? and streak_year = ?", [req.body.user_id, req.body.streak_year]
+    ).then((result) => {
+        // console.log(result);
+        if (result.length == 0) {
+            res.status(404).json({message: "Streak not found"});
+        } else {
+            res.status(200).json({
+                message: "Streak fetched successfully",
+                streak: parseStreak(result[0].streak_array, result[0].streak_year)
+            });
+        }
+    }).catch((err) => { 
+        res.status(500).json({message: "Internal server error"});
+        // console.log(err);
+    });
+}
+
+const checkIn = async (req, res) => {
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 0);
+    const diff = now - startOfYear;
+    const oneDay = 1000 * 60 * 60 * 24;
+    const dayOfYear = ~~(diff / oneDay);
+
+    queryPromise(
+        "select streak_array, streak_year from streak where user_id = ? and streak_year = ?", [req.body.user_id, req.body.streak_year]
+    ).then((result) => {
+        if (result.length == 0) {
+            res.status(404).json({message: "Streak not found"});
+        } else {
+            let streak = parseStreak(result[0].streak_array, result[0].streak_year);
+            streak[dayOfYear-1] = true;
+            let output = "";
+            for (let i = 0; i < streak.length; i++) {
+                output += streak[i] ? "1" : "0";
+            }
+
+            queryPromise(
+                "update streak set streak_array = ? where user_id = ? and streak_year = ?",
+                [output, req.body.user_id, result[0].streak_year]
+            ).then((result) => {
+                res.status(200).json({message: "Check-in successful"});
+            }).catch((err) => {
+                res.status(500).json({message: "Internal server error"});
+            });
+        }
+    }).catch((err) => { 
+        res.status(500).json({message: "Internal server error"});
+    });
+}
+
 export {
     registerUser,
     loginUser,
     fetchUserDetails,
-    fetchUserBlogs
+    fetchUserBlogs,
+    resetUser,
+    getStreak,
+    checkIn
 }

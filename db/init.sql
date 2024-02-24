@@ -23,7 +23,7 @@ create table users (
 create table streak (
 	user_id int not null,
     streak_year year not null,
-    streak_array blob(46) not null,
+    streak_array text,
 
 	primary key (user_id, streak_year),
     foreign key (user_id) references users(user_id)
