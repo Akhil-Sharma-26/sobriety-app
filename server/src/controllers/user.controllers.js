@@ -173,6 +173,38 @@ const getStreak = async (req, res) => {
 }
 
 const checkIn = async (req, res) => {
+  // if day_number is provided, use it
+  if (req.body.day_number) {
+    queryPromise(
+      "select streak_array, streak_year from streak where user_id = ? and streak_year = ?",
+      [req.body.user_id, req.body.streak_year]
+    ).then((result) => {
+      if (result.length == 0) {
+        res.status(404).json({ message: "Streak not found" });
+      } else {
+        let streak = parseStreak(result[0].streak_array, result[0].streak_year);
+        streak[req.body.day_number-1] = true;
+        let output = "";
+        for (let i = 0; i < streak.length; i++) {
+          output += streak[i] ? "1" : "0";
+        }
+
+        queryPromise(
+          "update streak set streak_array = ? where user_id = ? and streak_year = ?",
+          [output, req.body.user_id, result[0].streak_year]
+        ).then((result) => {
+          res.status(200).json({ message: `Check-in successful for day ${req.body.day_number}` });
+        }).catch((err) => {
+          res.status(500).json({ message: "Internal server error" });
+        });
+      }
+    }).catch((err) => {
+      res.status(500).json({ message: "Internal server error" });
+    });
+  }
+
+  // if day_number is not provided, use the current date
+  else {
     const now = new Date();
     const startOfYear = new Date(now.getFullYear(), 0, 0);
     const diff = now - startOfYear;
@@ -180,7 +212,8 @@ const checkIn = async (req, res) => {
     const dayOfYear = ~~(diff / oneDay);
 
     queryPromise(
-        "select streak_array, streak_year from streak where user_id = ? and streak_year = ?", [req.body.user_id, req.body.streak_year]
+        "select streak_array, streak_year from streak where user_id = ? and streak_year = ?",
+        [req.body.user_id, req.body.streak_year]
     ).then((result) => {
         if (result.length == 0) {
             res.status(404).json({message: "Streak not found"});
@@ -204,7 +237,48 @@ const checkIn = async (req, res) => {
     }).catch((err) => { 
         res.status(500).json({message: "Internal server error"});
     });
+  }
 }
+
+const getStreakInfo = async (req, res) => {
+  queryPromise(
+    "select streak_array, streak_year from streak where user_id = ? and streak_year = ?",
+    [req.body.user_id, req.body.streak_year]
+  ).then((result) => {
+    if (result.length == 0) {
+      res.status(404).json({ message: "Streak not found" });
+    } else {
+      let streak = parseStreak(result[0].streak_array, result[0].streak_year);
+      
+      let longestStreak = 0;
+      let currentStreak = 0;
+
+      const dayOfYear = ~~(
+        (new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)
+      );
+
+      for (let i = 0; i < dayOfYear; i++) {
+        if (streak[i]) {
+          currentStreak++;
+          if (currentStreak > longestStreak) {
+            longestStreak = currentStreak;
+          }
+        } else {
+          currentStreak = 0;
+        }
+      }
+
+      res.status(200).json({
+        message: "Streak info fetched successfully",
+        longestStreak: longestStreak,
+        currentStreak: currentStreak,
+      });
+    }
+  }).catch((err) => {
+    res.status(500).json({ message: "Internal server error" });
+  });
+}
+
 
 export {
     registerUser,
@@ -213,5 +287,6 @@ export {
     fetchUserBlogs,
     resetUser,
     getStreak,
-    checkIn
+    checkIn,
+    getStreakInfo
 }
