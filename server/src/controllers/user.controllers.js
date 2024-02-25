@@ -241,7 +241,7 @@ const checkIn = async (req, res) => {
   }
 }
 const fetchAllBlogs = async (req, res) => {
-  queryPromise("select * from blog_posts")
+  queryPromise("select post_id, users.display_name, date_created, date_edited, heading, content, upvote from blog_posts, users where blog_posts.author = users.user_id")
     .then((result) => {
       if (result.length == 0) {
         res.status(404).json({ message: "No blogs found" });
