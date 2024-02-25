@@ -80,17 +80,6 @@ st.subheader("Ask me Anything about my TAAS family!")
 input_prompt = st.text_area("Enter a prompt", key="input")
 generate_response = st.button("Generate Response")
 
-history = [
-    {
-        "role": "user",
-        "parts": ["what is taas?"]
-  },
-  {
-        "role": "model",
-        "parts": ["Taas is Thapar Amateur Astronomy Society"]
-  }
-]
-
 if generate_response:
     convo = model.start_chat(history=history)
     response = convo.send_message(f"{input_prompt}")
