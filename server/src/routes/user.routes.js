@@ -1,6 +1,15 @@
 import { Router } from "express";
-
-import { loginUser, registerUser, fetchUserDetails, fetchUserBlogs, resetUser, getStreak, checkIn,fetchAllBlogs } from "../controllers/user.controllers.js";
+import {
+    loginUser,
+    registerUser,
+    fetchUserDetails,
+    fetchUserBlogs,
+    resetUser,
+    getStreak,
+    checkIn,
+    fetchAllBlogs,
+    getStreakInfo
+} from "../controllers/user.controllers.js";
 
 const router = Router();
 
@@ -12,6 +21,7 @@ router.route('/reset').post(resetUser)
 router.route('/streak').post(getStreak)
 router.route('/checkin').post(checkIn)
 router.route("/all-blogs").get(fetchAllBlogs);
+router.route('/streak-info').post(getStreakInfo)
 
 
 export default router;
