@@ -1,6 +1,4 @@
 google-generativeai
 flask
 streamlit
-dotenv
-json
 flask_cors
