@@ -2,14 +2,17 @@ import React, { useState, useRef } from "react";
 import bcrypt from "bcryptjs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useTodo } from "../context/UserContext";
 
 const LoginPage = () => {
   const navigate = useNavigate()
   const [action, setAction] = useState("Login");
   const emailRef = useRef();
   const passwordRef = useRef();
-
+  const {addTodo} = useTodo()
+  const [user,setuser] = useState("")
   const handleSubmit = async () => {
+    
     // const hashedPass = await bcrypt.hash(passwordRef.current.value, 10);
     // console.log(hashedPass);
     const user = {
@@ -28,6 +31,7 @@ const LoginPage = () => {
       console.log(res);
       localStorage.setItem("USERNAME_ID", res.data.user_id);
       localStorage.setItem("USERNAME", res.data.display_name);
+      addTodo(res.data.display_name,res.data.user_id)
       navigate('/')
     } catch (error) {
       console.error("SomeError Occured", error);

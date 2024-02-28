@@ -28,7 +28,7 @@ export default function BlogPage() {
                         key={post.id}
                         heading={post.heading}
                         content={parse(post.content)}
-                        author={post.author}
+                        author={post.display_name}
                         date={post.date}
                     />
                 )

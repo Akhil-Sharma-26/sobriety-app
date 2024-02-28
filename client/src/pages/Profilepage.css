@@ -1,0 +1,46 @@
+#streak-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    border-width: 2px;
+}
+
+#streak-boxes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.month-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.month-streak {
+    display: inline;
+    margin: 10px;
+}
+
+.green {
+    width: 20px;
+    height: 20px;
+    background-color: green;
+}
+
+.grey {
+    width: 20px;
+    height: 20px;
+    background-color: lightgray;
+}
+
+.hidden {
+    display: none;
+}
+
+#hidden {
+    display: none;
+}
