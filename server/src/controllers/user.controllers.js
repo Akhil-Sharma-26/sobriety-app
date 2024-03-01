@@ -107,7 +107,6 @@ const loginUser = async (req, res) => {
 };
 
 const fetchUserDetails = async (req, res) => {
-  console.log(req);
   queryPromise("select display_name, addiction from users where user_id = ?", [
     req.body.user_id,
   ])
