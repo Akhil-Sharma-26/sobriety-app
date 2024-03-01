@@ -3,7 +3,8 @@ import bcrypt from "bcryptjs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useTodo } from "../context/UserContext";
-
+import { ToastContainer, toast } from "react-toastify";  
+import "react-toastify/dist/ReactToastify.css";  
 const LoginPage = () => {
   const navigate = useNavigate()
   const [action, setAction] = useState("Login");
@@ -15,6 +16,7 @@ const LoginPage = () => {
     
     // const hashedPass = await bcrypt.hash(passwordRef.current.value, 10);
     // console.log(hashedPass);
+    toast.loading('Loading...')
     const user = {
       email: emailRef.current.value,
       password: passwordRef.current.value,
@@ -28,6 +30,9 @@ const LoginPage = () => {
         "http://localhost:8080/api/v1/users/login",
         user
       );
+      toast.dismiss()
+      toast.success('Login Successfull!!')
+      // add Timeout here!
       console.log(res);
       localStorage.setItem("USERNAME_ID", res.data.user_id);
       localStorage.setItem("USERNAME", res.data.display_name);
@@ -40,6 +45,7 @@ const LoginPage = () => {
 
   return (
     <>
+      <ToastContainer/>
       <div className="container">
         <div className="header">
           <div className="text">{action}</div>
@@ -69,7 +75,7 @@ const LoginPage = () => {
         <div className="wao">
             Don't Have an Account??
           <span >
-            <button onClick={()=>navigate('/signup')}> Click Here!
+            <button onClick={()=>navigate('/blogs')}> Click Here!
             </button>
             </span>
         </div>
