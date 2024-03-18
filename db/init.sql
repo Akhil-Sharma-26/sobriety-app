@@ -51,8 +51,3 @@ create table main_content (
     primary key (id),
     foreign key (author) references users(user_id)
 );
-
-
-
--- @block
-insert into blog_post VALUES(1, 12, SYSDATE, null, 'My first post', 'This is my first post', 0);
